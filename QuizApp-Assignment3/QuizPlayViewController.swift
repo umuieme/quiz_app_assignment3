@@ -30,11 +30,25 @@ class QuizPlayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        QuizManager.shared.startQuiz()
         quizList = QuizManager.shared.getQuestionList().shuffled()
         currentIndex = 0
         setQuestion()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
 
+    @IBAction func onBackPressed(_ sender: Any) {
+        showConfirmationDialog(title: "Are you sure you want to exit?", message: "All your progress will be lost") { confirm in
+            if confirm {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+    
     func setQuestion() {
         quizProgressLabel.text = "\(currentIndex + 1) of \(quizList.count)"
         quizzProgressView.setProgress(
@@ -88,11 +102,7 @@ class QuizPlayViewController: UIViewController {
                 if confirm {
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let secondVC = storyboard.instantiateViewController(identifier: "ResultViewController")
-                    secondVC.modalPresentationStyle = .fullScreen
-                    self.navigationController?.present(secondVC, animated: true,completion: {
-                        print("done");
-//                        self.navigationController?.popToRootViewController(animated: true)
-                    });
+                    self.navigationController?.pushViewController(secondVC, animated: true);
                 }
             }
             

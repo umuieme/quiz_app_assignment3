@@ -66,6 +66,10 @@ class QuizManager {
                incorrectAnswers: ["Android Studio Profiler", "Postman", "GitHub Actions"]
            )
     ]
+    
+    func startQuiz() {
+        userAnswers = [:]
+    }
 
     func addQuiz(question: Question) {
         questionList.append(question)
