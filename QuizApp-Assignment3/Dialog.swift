@@ -9,11 +9,13 @@ import UIKit
 
 
 extension UIViewController {
-    func showErrorDialogWith( message: String, title: String = "Error") {
+    func showErrorDialogWith( message: String, title: String = "Error", completionHandler: (()->Void)? = nil) {
         let alert = UIAlertController(
             title: title, message: message, preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            completionHandler?();
+        }))
 
         present(alert, animated: true)
     }

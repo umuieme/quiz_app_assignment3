@@ -32,6 +32,12 @@ class QuizPlayViewController: UIViewController {
         super.viewDidLoad()
         QuizManager.shared.startQuiz()
         quizList = QuizManager.shared.getQuestionList().shuffled()
+        if(quizList.isEmpty){
+            showErrorDialogWith(message: "Please build quiz using quiz builder first", title: "No question added") {
+                self.navigationController?.popViewController(animated: true)
+            }
+            return;
+        }
         currentIndex = 0
         setQuestion()
     }
@@ -55,13 +61,15 @@ class QuizPlayViewController: UIViewController {
             Float(currentIndex + 1) / Float(quizList.count), animated: true)
         let currentQuiz = quizList[currentIndex]
         questionLabel.text = currentQuiz.question
+        
+        let options = currentQuiz.getOptions()
 
-        firstOptionLabel.setTitle(currentQuiz.incorrectAnswers[0], for: .normal)
+        firstOptionLabel.setTitle(options[0], for: .normal)
 
         secondOptionLabel.setTitle(
-            currentQuiz.incorrectAnswers[1], for: .normal)
-        thirdOptionLabel.setTitle(currentQuiz.incorrectAnswers[2], for: .normal)
-        fourthOptionLabel.setTitle(currentQuiz.correctAnswer, for: .normal)
+            options[1], for: .normal)
+        thirdOptionLabel.setTitle(options[2], for: .normal)
+        fourthOptionLabel.setTitle(options[3], for: .normal)
         updateOptionSelection()
 
         if currentIndex < quizList.count - 1 {

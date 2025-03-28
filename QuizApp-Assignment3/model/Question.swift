@@ -19,4 +19,8 @@ class Question {
         self.incorrectAnswers = incorrectAnswers
         self.uuid = uuid
     }
+    
+    func getOptions() -> [String] {
+        return ([correctAnswer] + incorrectAnswers).shuffled()
+    }
 }
